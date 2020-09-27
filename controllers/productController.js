@@ -10,11 +10,10 @@ const productController = {
       nest: true,
       offset: PAGE_OFFSET,
       limit: PAGE_LIMIT
+    }).then(products => {
+      return res.render('products', { products })
     })
-      .then(products => {
-        return res.render('products', { products })
-      })
-  }
+  },
 }
 
 module.exports = productController  

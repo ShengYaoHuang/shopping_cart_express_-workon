@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const exphbs = require('express-handlebars')
+const session = require('express-session')
+const bodyParser = require('body-parser')
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -19,11 +22,21 @@ app.engine('.hbs', exphbs({
   helpers: require('./config/handlebars-helpers')
 }));
 
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret: 'ac',
+  name: 'ac',
+  cookie: { maxAge: 800000 },
+  resave: false,
+  saveUninitialized: true,
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
